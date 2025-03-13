@@ -1,4 +1,5 @@
 from socket import *
+import time
 
 serverPort = 12000
 serverSocket = socket(AF_INET, SOCK_STREAM)
@@ -7,15 +8,27 @@ serverSocket.listen(1)
 
 print('O servidor está pronto')
 
-while True:
-    connectionSocket, addr = serverSocket.accept()
+try:
+    while True:
+        connectionSocket, addr = serverSocket.accept()
 
-    if connectionSocket.recv(1024000).decode().find("mais") :
-        sentence = connectionSocket.recv(1024000).decode() + " Lourival"
-    else :
-        sentence = connectionSocket.recv(1024000).decode() + " não sei"
+        sentence = connectionSocket.recv(1024000).decode()
 
-    response = sentence.lower()
+        existe = sentence.find("mais")
 
-    connectionSocket.send(response.encode())
-    connectionSocket.close()
+        if existe != -1:
+            sentence = sentence + " Lourival"
+        else :
+            sentence = sentence + " não sei"
+
+        response = sentence.lower()
+
+        connectionSocket.send(response.encode())
+        connectionSocket.close()
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("Script interrompido pelo usuário.")
+    # Adicione aqui qualquer código de limpeza necessário
+    # ...
+finally:
+    print("Programa encerrado.")
