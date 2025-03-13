@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .buttonUDP {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        .buttonTCP {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+        }
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Socket Client</h1>
+        <input type="text" id="message" placeholder="Enter message">
+        <button class="button buttonUDP" onclick="sendUDP()">Send UDP</button>
+        <button class="button buttonTCP" onclick="sendTCP()">Send TCP</button>
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        async function sendUDP() {
+            const message = document.getElementById('message').value;
+            const response = await fetch('http://127.0.0.1:5000/udp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            document.getElementById('response').innerText = `Response: ${data.response}`;
+        }
+
+        async function sendTCP() {
+            const message = document.getElementById('message').value;
+            const response = await fetch('http://127.0.0.1:5000/tcp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            document.getElementById('response').innerText = `Response: ${data.response}`;
+        }
+
+        async function sendUDP2() {
+            const message = document.getElementById('message').value;
+            const response = await fetch('http://127.0.0.1:5000/udp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message })
+            });
+            const data = await response.json();
+            document.getElementById('response').innerText = `Response: ${data.response}`;
+        }
+
+        async function sendTCP2() {
+            const message = document.getElementById('message').value;
+            const response = await fetch('http://127.0.0.1:12000', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/octet-stream'
+                },
+                body: message
+            });
+            const data = await response.json();
+            document.getElementById('response').innerText = `Response: ${data.response}`;
+        }
+    </script>
+</body>
+</html>
